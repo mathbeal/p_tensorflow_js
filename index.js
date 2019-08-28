@@ -55,7 +55,7 @@ async function app() {
     var x_labels = [];
     var y_values = [];
     for (const [k, v] of Object.entries(counter)){
-        console.log(k,v);
+        console.log(classes[k],v);
         x_labels.push(classes[k]);
         y_values.push(v);
     }
