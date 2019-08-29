@@ -6,7 +6,63 @@ const webcamElement = document.getElementById('webcam');
 const classes = ['Face', 'Book', 'Cellphone'];
 
 let net;
+let chart; // display classExempleCount
 
+// Classifier functions
+function get_class_example_infos(){
+  const counter = classifier.getClassExampleCount();
+  var x_labels = classes;
+  var y_values = [0, 0, 0];
+  // update y_values if changed
+  for (const [k, v] of Object.entries(counter)){
+      y_values[k] = v;
+  }
+  // if not yet  classes example return default values
+  return [x_labels, y_values];
+}
+
+// Chart functions
+function update_chart(chart, x_labels, y_values){
+  chart.data.labels = x_labels;
+  chart.data.datasets[0].data = y_values;
+  chart.update();
+}
+
+function create_chart(){
+  const [x_labels, y_values] = get_class_example_infos();
+  return new Chart(document.getElementById("bar-chart"), {
+    type: 'bar',
+    data: {
+      labels: x_labels,
+      datasets: [
+        {
+          label: "Number of samples",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f"],
+          data: y_values,
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Number of sample by class'
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            suggestedMin: 0,
+            suggestedMax: 50,
+          }
+        }]
+      }
+    }
+  });
+}
+
+chart = create_chart();
+
+// Main application
 async function app() {
 
   // Load the model.
@@ -26,6 +82,10 @@ async function app() {
 
       // Pass the intermediate activation to the classifier.
       classifier.addExample(activation, classId);
+
+      // Update chart
+      const [x_labels, y_values] = get_class_example_infos();
+      update_chart(chart, x_labels, y_values);
   };
 
   // When clicking a button, add an example for that class.
@@ -51,34 +111,8 @@ async function app() {
   // tf.browser.fromPixels(document.getElementById('class1'));
   // source: https://github.com/tensorflow/tfjs-models/tree/master/knn-classifier
   document.getElementById('class-display').addEventListener('click', function(){
-    const counter = classifier.getClassExampleCount();
-    var x_labels = [];
-    var y_values = [];
-    for (const [k, v] of Object.entries(counter)){
-        console.log(classes[k],v);
-        x_labels.push(classes[k]);
-        y_values.push(v);
-    }
-    new Chart(document.getElementById("bar-chart"), {
-      type: 'bar',
-      data: {
-        labels: x_labels,
-        datasets: [
-          {
-            label: "Number of samples",
-            backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-            data: y_values,
-          }
-        ]
-      },
-      options: {
-        legend: { display: false },
-        title: {
-          display: true,
-          text: 'Number of sample by class'
-        }
-      }
-    });
+      const [x_labels, y_values] = get_class_example_infos();
+      update_chart(chart, x_labels, y_values);
       var msg = '';
       msg = msg.concat(`Number of classed defined ${classifier.getNumClasses()}`);
       document.getElementById('display').innerText = msg;
