@@ -55,7 +55,7 @@ function create_chart(){
         yAxes: [{
           ticks: {
             suggestedMin: 0,
-            suggestedMax: 50,
+            suggestedMax: 20,
           }
         }]
       }
@@ -97,38 +97,17 @@ async function app() {
   document.getElementById('class-b').addEventListener('click', () => addExample(1));
   document.getElementById('class-c').addEventListener('click', () => addExample(2));
 
-  // Saving and loading a model
-  document.getElementById('class-savemodel').addEventListener('click', function(){
-    console.log('save model');
-  });
-
-  document.getElementById('class-loadmodel').addEventListener('click', function(){
-    console.log('load model');
-  });
-
   // Remove learned classes.
   document.getElementById('class-reset').addEventListener('click', function(){
 	   classifier.clearAllClasses()
-     console.log('All classes cleared');
+     const [x_labels, y_values] = get_class_example_infos();
+     update_chart(chart, x_labels, y_values);
+     console.log('All learned classed are removed');
   });
 
-  // tf.browser.fromPixels(document.getElementById('class1'));
-  // source: https://github.com/tensorflow/tfjs-models/tree/master/knn-classifier
-  document.getElementById('class-display').addEventListener('click', function(){
-      console.log('class-display clicked');
-      const [x_labels, y_values] = get_class_example_infos();
-      update_chart(chart, x_labels, y_values);
-      var msg = '';
-      msg = msg.concat(`Number of classed defined ${classifier.getNumClasses()}`);
-      document.getElementById('display').innerText = msg;
-    });
-
-    // var errors
-    // save trained set
-    // load trained set
-    // les images doivent avoir la meme taille ?
-
   while (true) {
+
+      // need at least one learned class.
       if (classifier.getNumClasses() > 0) {
       // Get the activation from mobilenet from the webcam.
       const activation = net.infer(webcamElement, 'conv_preds');
@@ -136,7 +115,6 @@ async function app() {
 	     const result = await classifier.predictClass(activation);
 
       document.getElementById('console').innerText = `
-        last update: ${(new Date).toLocaleTimeString()}\n
         prediction: ${classes[result.classIndex]}\n
         probability: ${result.confidences[result.classIndex]}
       `;
@@ -170,35 +148,22 @@ $("#testing-nav").on('click', function(e){
   console.log('testing nav clicked');
   $("#training-content").hide();
   $("#training-nav").removeClass('active');
-  $("#description-content").hide();
-  $("#description-nav").removeClass('active');
   $(this).addClass('active');
   $("#testing-content").show();
 });
 
 $("#training-nav").on('click', function(e){
   console.log('training nav clicked');
-  $("#description-content").hide();
-  $("#description-nav").removeClass('active');
   $("#testing-content").hide();
   $("#testing-nav").removeClass('active');
   $(this).addClass('active');
   $("#training-content").show();
 });
 
-$("#description-nav").on('click', function(e){
-  console.log('description nav clicked');
-  $("#testing-content").hide();
-  $("#testing-nav").removeClass('active');
-  $("#training-content").hide();
-  $("#training-nav").removeClass('active');
-  $(this).addClass('active');
-  $("#description-content").show();
-});
-
 $(document).ready(function() {
     console.log('document rdy');
-    $('#description-nav').click();
+    $('#training-nav').click();
+
 });
 
 app();

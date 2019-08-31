@@ -25,54 +25,61 @@
 
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a class="nav-link active" id='description-nav' href="#">Description</a>
+        <a class="nav-link" id='training-nav' href="#">Training Area</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id='training-nav' href="#">Training</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id='testing-nav' href="#">Testing</a>
+        <a class="nav-link" id='testing-nav' href="#">Testing Area</a>
       </li>
     </ul>
 
-    <div id="description-content" >
-      <div class="card-body">
-          <h5 class="card-title">Description</h5>
-          <p class="card-text"></p>
-      </div>
-    </div>
-
     <div id="training-content">
       <div class="card-body">
-          <h5 class="card-title">Training</h5>
-          <p class="card-text"> Step 1: Show each class (one by one) in front of the cam and click to the corresponding class button to train classifier. (Repeat Step 1.)</p>
+          <h5 class="card-title">Training Area</h5>
+          <p class="card-text">
+            For each class among (Face, Book, Cellphone):
+            <ol>
+              <li> Step 1: Show it in front of the cam and click to the corresponding class button to train classifier. </li>
+              <li> Step 2: If you don't have 10 samples, repeat Step 1; </li>
+            </ol>
+          </p>
       </div>
-      <div class='text-center'>
-        <div class="btn-group" role="group" aria-label="Basic example">
-          <button type='button' class='btn btn-primary' id="class-a">Add Face</button>
-          <button type='button' class='btn btn-primary' id="class-b">Add Book</button>
-          <button type='button' class='btn btn-primary' id="class-c">Add CellPhone</button>
-          <button type='button' class='btn btn-primary' id="class-noaction">No Action</button>
+      <div class='container'>
+        <div class='row'>
+          <div class='col-sm'>
+              <div class='text-center'>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <button type='button' class='btn btn-primary' id="class-a">Add Face</button>
+                  <button type='button' class='btn btn-primary' id="class-b">Add Book</button>
+                  <button type='button' class='btn btn-primary' id="class-c">Add CellPhone</button>
+                  <button type='button' class='btn btn-primary' id="class-noaction">No Action</button>
+                  <button type='button' class='btn btn-secondary' id='class-reset'>Reset Training</button>
+                </div>
+              </div>
+          </div>
+          <div class='col-md'>
+            <div class='class-display'>
+              <canvas id="bar-chart" width="200" height="120"></canvas>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="testing-content">
+    <div class="card-body">
+        <h5 class="card-title">Testing Area</h5>
+        <p class="card-text">
+          For each class among (Face, Book, CellPhone):
+          <ol>
+              <li> Step 1: Show a class in front of the camera; </li>
+              <li> Step 2: Check the displayed accuracy; </li>
+          </ol>
+        </p>
+        <div id='console'>
+          hsdlsd
         </div>
-      </div>
-      <canvas id="bar-chart" width="800" height="450"></canvas>
     </div>
-
-    <div id="testing-content">
-      <div class="card-body">
-          <h5 class="card-title">Testing</h5>
-          <p class="card-text">Step 1: Show a class in front of the camera and check accuracy of your trained model. (Go back training if needed).</p>
-      </div>
-      <div id="display">
-      </div>
-    </div>
-    <div id="console"></div>
-
-    <button id="class-training">Training</button>
-    <button id="class-display">Display Infos</button>
-    <button id="class-savemodel">Save Model</button>
-    <button id="class-loadmodel">Load Model</button>
-    <button id="class-reset">Reset </button>
+  </div>
 
     <!-- Load index.js after the content of the page -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
