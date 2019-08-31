@@ -7,7 +7,7 @@ This code let you:
 
 # Images
 ## Training
-![Alt text](training_area.png?raw=true "Training classifier")
+![Alt text](training_area.PNG?raw=true "Training classifier")
 
 ## Testing
 ![Alt text](testing_area.png?raw=true "Testing classifier")
