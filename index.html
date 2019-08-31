@@ -1,10 +1,11 @@
-<html>
+<!doctype html>
+<html lang="en">
   <head>
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <!-- Load the latest version of TensorFlow.js -->
     <script src="https://unpkg.com/@tensorflow/tfjs"></script>
     <script src="https://unpkg.com/@tensorflow-models/mobilenet"></script>
@@ -14,23 +15,69 @@
   </head>
   <body>
 
-    <div id="console"></div>
-    <!-- Add an image that we will use to test -->
-    <video autoplay playsinline muted id="webcam" width="224" height="224"></video>
-    <button id="class-a">Add Face</button>
-    <button id="class-b">Add Book</button>
-    <button id="class-c">Add CellPhone</button>
-
-    <div id="display">
+    <div class="card-body">
+        <h5 class="card-title">Welcome to the tensorflow Image RnnClassifier</h5>
+        <p class="card-text">Train the classifier with your webcam and check accuracy in testing area.</p>
+        <div class="text-center">
+          <video autoplay playsinline muted id="webcam" width="224" height="224"></video>
+        </div>
     </div>
-    <canvas id="bar-chart" width="800" height="450"></canvas>
+
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" id='description-nav' href="#">Description</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id='training-nav' href="#">Training</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id='testing-nav' href="#">Testing</a>
+      </li>
+    </ul>
+
+    <div id="description-content" >
+      <div class="card-body">
+          <h5 class="card-title">Description</h5>
+          <p class="card-text"></p>
+      </div>
+    </div>
+
+    <div id="training-content">
+      <div class="card-body">
+          <h5 class="card-title">Training</h5>
+          <p class="card-text"> Step 1: Show each class (one by one) in front of the cam and click to the corresponding class button to train classifier. (Repeat Step 1.)</p>
+      </div>
+      <div class='text-center'>
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type='button' class='btn btn-primary' id="class-a">Add Face</button>
+          <button type='button' class='btn btn-primary' id="class-b">Add Book</button>
+          <button type='button' class='btn btn-primary' id="class-c">Add CellPhone</button>
+          <button type='button' class='btn btn-primary' id="class-noaction">No Action</button>
+        </div>
+      </div>
+      <canvas id="bar-chart" width="800" height="450"></canvas>
+    </div>
+
+    <div id="testing-content">
+      <div class="card-body">
+          <h5 class="card-title">Testing</h5>
+          <p class="card-text">Step 1: Show a class in front of the camera and check accuracy of your trained model. (Go back training if needed).</p>
+      </div>
+      <div id="display">
+      </div>
+    </div>
+    <div id="console"></div>
+
     <button id="class-training">Training</button>
-    <button id="class-noaction">No Action</button>
     <button id="class-display">Display Infos</button>
     <button id="class-savemodel">Save Model</button>
     <button id="class-loadmodel">Load Model</button>
     <button id="class-reset">Reset </button>
+
     <!-- Load index.js after the content of the page -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="index.js"></script>
   </body>
 </html>

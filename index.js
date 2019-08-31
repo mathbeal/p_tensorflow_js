@@ -10,6 +10,7 @@ let chart; // display classExempleCount
 
 // Classifier functions
 function get_class_example_infos(){
+  console.log('get_class_exemple_infos');
   const counter = classifier.getClassExampleCount();
   var x_labels = classes;
   var y_values = [0, 0, 0];
@@ -22,13 +23,15 @@ function get_class_example_infos(){
 }
 
 // Chart functions
-function update_chart(chart, x_labels, y_values){
+function update_chart(chart, x_labels, y_values, dataset_idx=0){
+  console.log('update_chart');
   chart.data.labels = x_labels;
-  chart.data.datasets[0].data = y_values;
+  chart.data.datasets[dataset_idx].data = y_values;
   chart.update();
 }
 
 function create_chart(){
+  console.log('create_chart');
   const [x_labels, y_values] = get_class_example_infos();
   return new Chart(document.getElementById("bar-chart"), {
     type: 'bar',
@@ -67,6 +70,7 @@ async function app() {
 
   // Load the model.
   console.log('Loading mobilenet..');
+
   net = await mobilenet.load();
   console.log('Sucessfully loaded model');
 
@@ -111,6 +115,7 @@ async function app() {
   // tf.browser.fromPixels(document.getElementById('class1'));
   // source: https://github.com/tensorflow/tfjs-models/tree/master/knn-classifier
   document.getElementById('class-display').addEventListener('click', function(){
+      console.log('class-display clicked');
       const [x_labels, y_values] = get_class_example_infos();
       update_chart(chart, x_labels, y_values);
       var msg = '';
@@ -128,7 +133,7 @@ async function app() {
       // Get the activation from mobilenet from the webcam.
       const activation = net.infer(webcamElement, 'conv_preds');
       // Get the most likely class and confidences from the classifier module.
-	  const result = await classifier.predictClass(activation);
+	     const result = await classifier.predictClass(activation);
 
       document.getElementById('console').innerText = `
         last update: ${(new Date).toLocaleTimeString()}\n
@@ -159,5 +164,41 @@ async function setupWebcam() {
     }
   });
 }
+
+// navigation
+$("#testing-nav").on('click', function(e){
+  console.log('testing nav clicked');
+  $("#training-content").hide();
+  $("#training-nav").removeClass('active');
+  $("#description-content").hide();
+  $("#description-nav").removeClass('active');
+  $(this).addClass('active');
+  $("#testing-content").show();
+});
+
+$("#training-nav").on('click', function(e){
+  console.log('training nav clicked');
+  $("#description-content").hide();
+  $("#description-nav").removeClass('active');
+  $("#testing-content").hide();
+  $("#testing-nav").removeClass('active');
+  $(this).addClass('active');
+  $("#training-content").show();
+});
+
+$("#description-nav").on('click', function(e){
+  console.log('description nav clicked');
+  $("#testing-content").hide();
+  $("#testing-nav").removeClass('active');
+  $("#training-content").hide();
+  $("#training-nav").removeClass('active');
+  $(this).addClass('active');
+  $("#description-content").show();
+});
+
+$(document).ready(function() {
+    console.log('document rdy');
+    $('#description-nav').click();
+});
 
 app();
