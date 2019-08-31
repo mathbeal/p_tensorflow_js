@@ -16,7 +16,7 @@
   <body>
 
     <div class="card-body">
-        <h5 class="card-title">Welcome to the tensorflow Image RnnClassifier</h5>
+        <h5 class="card-title">Welcome to the tensorflow Image KnnClassifier</h5>
         <p class="card-text">Train the classifier with your webcam and check accuracy in testing area.</p>
         <div class="text-center">
           <video autoplay playsinline muted id="webcam" width="224" height="224"></video>
@@ -36,16 +36,18 @@
       <div class="card-body">
           <h5 class="card-title">Training Area</h5>
           <p class="card-text">
+            Train your classifier with few diffents images of differents classes.
+            <br><br>
             For each class among (Face, Book, Cellphone):
             <ol>
               <li> Step 1: Show it in front of the cam and click to the corresponding class button to train classifier. </li>
-              <li> Step 2: If you don't have 10 samples, repeat Step 1; </li>
+              <li> Step 2: If you don't have enough samples, repeat Step 1; </li>
             </ol>
           </p>
       </div>
       <div class='container'>
         <div class='row'>
-          <div class='col-sm'>
+          <div class='col'>
               <div class='text-center'>
                 <div class="btn-group" role="group" aria-label="Basic example">
                   <button type='button' class='btn btn-primary' id="class-a">Add Face</button>
@@ -55,8 +57,10 @@
                   <button type='button' class='btn btn-secondary' id='class-reset'>Reset Training</button>
                 </div>
               </div>
+              <div id='training-console'>
+              </div>
           </div>
-          <div class='col-md'>
+          <div class='col'>
             <div class='class-display'>
               <canvas id="bar-chart" width="200" height="120"></canvas>
             </div>
@@ -69,14 +73,29 @@
     <div class="card-body">
         <h5 class="card-title">Testing Area</h5>
         <p class="card-text">
+          The prediction is the interpretation by the classifier of the current cam image.
+          <br><br>
           For each class among (Face, Book, CellPhone):
           <ol>
-              <li> Step 1: Show a class in front of the camera; </li>
+              <li> Step 1: Show a class in front of the cam; </li>
               <li> Step 2: Check the displayed accuracy; </li>
           </ol>
         </p>
-        <div id='console'>
-          hsdlsd
+        <div id='testing-console'>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Class Prediction</th>
+                <th scope="col">Probability</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td id="prediction">#</td>
+                <td id="probability">#</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
     </div>
   </div>

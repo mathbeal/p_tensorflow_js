@@ -1,12 +1,9 @@
-// https://storage.googleapis.com/tfjs-vis/mnist/dist/index.html
-// https://towardsdatascience.com/common-loss-functions-in-machine-learning-46af0ffc4d23
-
 const classifier = knnClassifier.create();
 const webcamElement = document.getElementById('webcam');
 const classes = ['Face', 'Book', 'Cellphone'];
 
 let net;
-let chart; // display classExempleCount
+let chart; // display classExampleCount
 
 // Classifier functions
 function get_class_example_infos(){
@@ -90,6 +87,7 @@ async function app() {
       // Update chart
       const [x_labels, y_values] = get_class_example_infos();
       update_chart(chart, x_labels, y_values);
+
   };
 
   // When clicking a button, add an example for that class.
@@ -102,6 +100,8 @@ async function app() {
 	   classifier.clearAllClasses()
      const [x_labels, y_values] = get_class_example_infos();
      update_chart(chart, x_labels, y_values);
+     $("#prediction").text("#");
+     $("#probability").text("#");
      console.log('All learned classed are removed');
   });
 
@@ -112,17 +112,20 @@ async function app() {
       // Get the activation from mobilenet from the webcam.
       const activation = net.infer(webcamElement, 'conv_preds');
       // Get the most likely class and confidences from the classifier module.
-	     const result = await classifier.predictClass(activation);
+	    const result = await classifier.predictClass(activation);
 
-      document.getElementById('console').innerText = `
-        prediction: ${classes[result.classIndex]}\n
-        probability: ${result.confidences[result.classIndex]}
-      `;
+      $("#prediction").text(classes[result.classIndex]);
+      // remove extra decimals
+      // source: https://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places-only-if-necessary
+      $("#probability").text(Math.round(result.confidences[result.classIndex]*100)/100);
+
     }
 
     await tf.nextFrame();
   }
 }
+
+
 
 async function setupWebcam() {
   return new Promise((resolve, reject) => {
